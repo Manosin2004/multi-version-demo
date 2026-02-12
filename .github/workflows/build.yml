@@ -11,25 +11,23 @@ jobs:
     strategy:
       matrix:
         version: [ v1, v2, v3 ]
-      fail-fast: false
 
     steps:
-    - name: Checkout
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Show version
-      run: echo "Running for ${{ matrix.version }}"
-
-    - name: Cache message file
+    # 👇 CACHE SECTION INGA THAAN
+    - name: Cache folder
       uses: actions/cache@v4
       with:
         path: cache-folder
         key: ${{ runner.os }}-${{ matrix.version }}-${{ hashFiles('message.txt') }}
 
-    - name: Create cache folder
+    - name: Create folder & file
       run: |
         mkdir -p cache-folder
-        echo "Cached content for ${{ matrix.version }}" > cache-folder/info.txt
+        echo "Hello ${{ matrix.version }}" > cache-folder/info.txt
 
-    - name: Display file
+    - name: Show file
       run: cat cache-folder/info.txt
+
