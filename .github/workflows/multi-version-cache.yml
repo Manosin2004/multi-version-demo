@@ -26,8 +26,6 @@ jobs:
 
       - name: Run npm install
         run: npm install
-        working-directory: my-app
-
 
       - run: npm test
         env:
