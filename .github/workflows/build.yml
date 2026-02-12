@@ -1,0 +1,35 @@
+name: Simple Matrix and Cache Demo
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        version: [ v1, v2, v3 ]
+      fail-fast: false
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Show version
+      run: echo "Running for ${{ matrix.version }}"
+
+    - name: Cache message file
+      uses: actions/cache@v4
+      with:
+        path: cache-folder
+        key: ${{ runner.os }}-${{ matrix.version }}-${{ hashFiles('message.txt') }}
+
+    - name: Create cache folder
+      run: |
+        mkdir -p cache-folder
+        echo "Cached content for ${{ matrix.version }}" > cache-folder/info.txt
+
+    - name: Display file
+      run: cat cache-folder/info.txt
